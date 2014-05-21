@@ -138,11 +138,10 @@ It uses some really awesome open-source projects:
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/markdown");
         editor.renderer.setScrollMargin(10, 10, 0, 0);
-        editor.on('input', compileMD());
-        function compileMD() {
-        document.getElementById("preview").innerHTML = markdown.toHTML(editor.getSession().getValue());     
-        }
-
+        editor.on('input', function(){
+          document.getElementById("preview").innerHTML = markdown.toHTML(editor.getSession().getValue());
+        });
+        document.getElementById("preview").innerHTML = markdown.toHTML(editor.getSession().getValue());
     </script>
   </body>
 </html>
