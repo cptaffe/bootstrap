@@ -100,7 +100,7 @@
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron">
-            <h1><div id="Title" contenteditable="true">Hello, world!</div></h1>
+            <h1><span id="Title" data-original-title="edit me!" data-placement="right" contenteditable="true">Hello, world!</span></h1>
             <div id="editorWrapper">
             <div id="editor">Edit this __text__.</div>
           </div>
@@ -160,13 +160,20 @@
           document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
         });
         document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
+        // focus cursor on editor & move to end of file
+        editor.focus();
+        editor.navigateFileEnd()
 
         // title from h1 edited
         title = document.getElementById("Title")
         document.title = title.innerHTML;
         title.addEventListener("input",function() {
           document.title = title.innerHTML;
+          $('#Title').tooltip('destroy')
         }, false);
+
+        $('#Title').tooltip('show')
+
     </script>
   </body>
 </html>
