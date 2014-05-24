@@ -125,16 +125,16 @@
     <script src="./dist/js/bootstrap.min.js"></script>
     <script src="offcanvas.js"></script>
     <script src="//cdn.jsdelivr.net/ace/1.1.3/min/ace.js" type="text/javascript" charset="utf-8"></script>
-    <script src="./markdown-js/markdown-gfm.js"></script>
+    <script src="./markdown-js/marked-autolink.js"></script>
     <script>
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/markdown");
         editor.renderer.setScrollMargin(10, 10, 0, 0);
         editor.on('input', function(){
-          document.getElementById("preview").innerHTML = markdown.toHTML(editor.getSession().getValue());
+          document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
         });
-        document.getElementById("preview").innerHTML = markdown.toHTML(editor.getSession().getValue());
+        document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
     </script>
   </body>
 </html>
