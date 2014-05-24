@@ -163,6 +163,7 @@
         // focus cursor on editor & move to end of file
         editor.focus();
         editor.navigateFileEnd()
+        editor.session.setUseWrapMode(true);
 
         // title from h1 edited
         title = document.getElementById("Title")
