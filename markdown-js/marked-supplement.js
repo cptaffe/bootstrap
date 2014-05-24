@@ -92,7 +92,7 @@ marked.setOptions = function(opt) {
 
 marked.defaults = {
   gfm: true,
-  autolink: true,
+  autolink: true
   tables: true,
   breaks: false,
   pedantic: false,
