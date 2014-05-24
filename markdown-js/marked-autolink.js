@@ -447,8 +447,8 @@ Lexer.prototype.token = function(src, top, bq) {
 
 var inline = {
   escape: /^\\([\\`*{}\[\]()#+\-.!_>])/,
-  /*autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,*/
-  autolink: /(^|[\s\n]|<br\/?>)((?:ftp?|https):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi,
+  autolink: /^<([^ >]+(@|:\/)[^ >]+)>/,
+  /*autolink: /(^|[\s\n]|<br\/?>)((?:ftp?|https):\/\/[\-A-Z0-9+\u0026\u2019@#\/%?=()~_|!:,.;]*[\-A-Z0-9+\u0026@#\/%=~()_|])/gi*/
   url: noop,
   tag: /^<!--[\s\S]*?-->|^<\/?\w+(?:"[^"]*"|'[^']*'|[^'">])*?>/,
   link: /^!?\[(inside)\]\(href\)/,
@@ -470,11 +470,11 @@ inline.link = replace(inline.link)
   ('href', inline._href)
   ();
 
-// additional code
+/*// additional code
   inline.autolink = replace(inline.autolink)
   ('$2', inline._inside)
   ('$2', inline._href)
-  ();
+  ();*/
 
 inline.reflink = replace(inline.reflink)
   ('inside', inline._inside)
