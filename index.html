@@ -57,12 +57,29 @@
                 <li><a href="#">Another action</a></li>
                 <li><a href="#">Something else here</a></li>
                 <li class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
+                <li class="dropdown-submenu">
+                  <a tabindex="-1" href="#">More options</a>
+                  <ul class="dropdown-menu">
+                    <li><a tabindex="-1" href="#">Second level</a></li>
+                    <li class="dropdown-submenu">
+                      <a href="#">More..</a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">3rd level</a></li>
+                        <li class="dropdown-submenu">
+                      <a href="#">More..</a>
+                      <ul class="dropdown-menu">
+                        <li><a href="#">3rd level</a></li>
+                        
+                      </ul>
+                    </li>
+                      </ul>
+                    </li>
+                    <li><a href="#">Second level</a></li>
+                    <li><a href="#">Second level</a></li>
+                  </ul>
+                </li>
               </ul>
             </li>
-                
           </ul>
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
@@ -73,6 +90,12 @@
       <div class="row row-offcanvas row-offcanvas-right">
 
         <div class="col-xs-12 col-sm-9">
+
+          <ol class="breadcrumb">
+            <li><a href="../">Byteflame</a></li>
+            <li class="active">Bootstrap</li>
+          </ol>
+
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
@@ -82,6 +105,7 @@
             <div id="editor">Edit this __text__.</div>
           </div>
           </div>
+
 
           <!-- Editor Output -->
           <div id="preview"> </div>
@@ -137,6 +161,7 @@
         });
         document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
 
+        // title from h1 edited
         title = document.getElementById("Title")
         document.title = title.innerHTML;
         title.addEventListener("input",function() {
