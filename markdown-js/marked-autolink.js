@@ -501,11 +501,11 @@ inline.pedantic = merge({}, inline.normal, {
 
 inline.gfm = merge({}, inline.normal, {
   escape: replace(inline.escape)('])', '~|])')(),
-  url: /^(https?|ftp:\/\/[^\s<]+[^<.,:;"')\]\s])/,
+  url: /^((?:https?|ftp):\/\/[^\s<]+[^<.,:;"')\]\s])/,
   del: /^~~(?=\S)([\s\S]*?\S)~~/,
   text: replace(inline.text)
     (']|', '~]|')
-    ('|', '|https?|ftp://|')
+    ('|', '|(?:https?|ftp)://|')
     ()
 });
 
