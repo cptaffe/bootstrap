@@ -154,7 +154,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="./dist/js/bootstrap.min.js"></script>
     <script src="offcanvas.js"></script>
-    <script src="//cdn.jsdelivr.net/ace/1.1.3/min/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./ace-min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="./markdown-js/marked-autolink.js"></script>
     <script src="./markdown-js/marked-supplement.js"></script>
     <script src="./keypress-2.0.2.min.js"></script>
@@ -164,6 +164,7 @@
         // & Input driven marked compilation
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
+        //editor.setTheme("ace/theme/ant");
         editor.getSession().setMode("ace/mode/markdown");
         editor.renderer.setScrollMargin(10, 10, 0, 0);
         document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
