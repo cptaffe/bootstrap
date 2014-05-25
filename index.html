@@ -31,10 +31,13 @@
     <!-- Ace Editor -->
     <link href="./ace.css" rel="stylesheet">
 
+    <!-- Prettify -->
+    <link rel="stylesheet" href="./prettify/prettify.css">
+
   </head>
 
   <body>
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="navbar navbar-static-top navbar-inverse" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -99,13 +102,12 @@
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
-          <div class="jumbotron">
-            <h1><span id="Title" data-original-title="edit me!" data-placement="right" contenteditable="true">Hello, world!</span></h1>
-            <div id="editorWrapper">
+
+          <h1 class="page-header"><span id="Title" data-original-title="edit me!" data-placement="right" contenteditable="true">Hello, world!</span></h1>
+          <div id="editorWrapper">
+            <!-- Editor -->
             <div id="editor">Edit this __text__.</div>
           </div>
-          </div>
-
 
           <!-- Editor Output -->
           <div id="preview"> </div>
@@ -129,6 +131,10 @@
                 <a class="list-group-item" href="#"><i class="fa fa-cog fa-fw"></i>&nbsp; Settings</a>
           </div>
 
+          <!-- Editor based Alerts -->
+            <div id="editorAlerts"></div>
+            <div id="editorStatus"></div>
+
         </div><!--/span-->
       </div><!--/row-->
 
@@ -151,30 +157,99 @@
     <script src="//cdn.jsdelivr.net/ace/1.1.3/min/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="./markdown-js/marked-autolink.js"></script>
     <script src="./markdown-js/marked-supplement.js"></script>
+    <script src="./keypress-2.0.2.min.js"></script>
+    <script src="./prettify/prettify.js"></script>
     <script>
+        // Ace Editor Configuration
+        // & Input driven marked compilation
         var editor = ace.edit("editor");
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/markdown");
         editor.renderer.setScrollMargin(10, 10, 0, 0);
-        editor.on('input', function(){
-          document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
-        });
         document.getElementById("preview").innerHTML = marked(editor.getSession().getValue());
         // focus cursor on editor & move to end of file
         editor.focus();
         editor.navigateFileEnd()
         editor.session.setUseWrapMode(true);
 
-        // title from h1 edited
+        // Title editability
+        // and tooltip
         title = document.getElementById("Title")
         document.title = title.innerHTML;
         title.addEventListener("input",function() {
           document.title = title.innerHTML;
           $('#Title').tooltip('destroy')
+          localStorage.titleContent = title.innerHTML;
         }, false);
-
         $('#Title').tooltip('show')
 
+        // Dynamically enable bootstrap alerts
+        // for alerting to current state.
+        bootstrapAlert = function() {}
+        bootstrapAlert.warning = function(where, type, note, message) {
+          $(where).html('<div id="loadFromLocal" class="alert alert-'+type+' alert-dismissable fade in out"> <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>'+note+'</strong> '+message+'</div>')
+        }
+
+        // Local storage of editor & title content
+        // for preserving between sessions.
+        if (!localStorage.editorContent){
+          localStorage.setItem("editorContent", "");
+        }
+        else {
+          var save = localStorage.editorContent;
+          editor.getSession().setValue(save);
+          //bootstrapAlert.warning('#editorAlerts', 'success','Success:','Pulled from local save.');
+          // initial rendering
+          document.getElementById("preview").innerHTML = marked(save);
+          if (save.length > 400){
+            bootstrapAlert.warning('#editorAlerts', 'warning','Long Document:','Render by using cmd-s');
+            editor.session.getUndoManager().markClean();
+          }
+        }
+
+        if (!localStorage.titleContent){
+          localStorage.setItem("titleContent", "");
+        }
+        else {
+          $('#Title').tooltip('destroy')
+          title.innerHTML = localStorage.titleContent;
+          document.title = localStorage.titleContent;
+        }
+
+        // Ace Editor AutoSave
+        editor.on('input', function(){
+          var v = editor.getSession().getValue()
+          if (v.length > 400){
+            if (!editor.session.getUndoManager().isClean()){
+              bootstrapAlert.warning('#editorAlerts', 'warning','Long Document:','Render by using cmd-s');
+            }
+            else {
+              bootstrapAlert.warning('#editorStatus', 'warning','Status:','saved.');
+            }
+            editor.session.getUndoManager().markClean();
+          } else{
+            renderMarkdown();
+          }
+          localStorage.editorContent = v
+        });
+
+        // Keypress
+        // key listener
+        var listener = new window.keypress.Listener();
+        listener.sequence_combo("up up down down left right left right b a", function() {
+          alert("fuck you.")
+        }, true);
+
+        listener.sequence_combo("cmd s", function() {
+          renderMarkdown();
+        }, true);
+
+        function renderMarkdown(){
+          bootstrapAlert.warning('#editorStatus', 'success','Status:','rendered and saved!');
+          var v = editor.getSession().getValue()
+          document.getElementById("preview").innerHTML = marked(v);
+          localStorage.editorContent = v
+        }
     </script>
   </body>
 </html>
